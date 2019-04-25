@@ -51,8 +51,8 @@ def books_list(request):
         else:
             books_responce = requests.get(books_url, cookies=cookies, headers=headers)
             result += build_booklist(books_responce)
-        if books_responce['meta']['next']:
-            result += get_booklist(cookies, next_page_flag=True, next_page=books_responce['meta']['next'])
+        #if books_responce['meta']['next']:
+        #    result += get_booklist(cookies, next_page_flag=True, next_page=books_responce['meta']['next'])
         return result
 
 
@@ -66,5 +66,5 @@ def books_list(request):
     return render(
         request,
         'index.html',
-        context={'num_books':num_books,'num_instances':num_instances,'num_instances_available':num_instances_available,'num_authors':num_authors},
+        context={'books_list':books_list},
     )

@@ -4,5 +4,5 @@ from . import views
 
 
 urlpatterns = [
-    url(r'', views.BookListView.as_view(), name='books'),
+    url(r'', views.books_list, name='books'),
 ]
