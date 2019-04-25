@@ -51,14 +51,15 @@ def books_list(request):
         else:
             books_responce = requests.get(books_url, cookies=cookies, headers=headers)
             result += build_booklist(books_responce)
-        #if books_responce['meta']['next']:
-        #    result += get_booklist(cookies, next_page_flag=True, next_page=books_responce['meta']['next'])
+        if books_responce.json()['meta']['next']:
+            result += get_booklist(cookies, next_page_flag=True, next_page=books_responce['meta']['next'])
         return result
 
 
     payload = {'email': 'gorkycow@gmail.com', 'password': 'LENAst_82'}
     auth_url='https://mybook.ru/api/auth/'
     auth_response = requests.post(auth_url, payload)
+    cover_url = 'https://i1.mybook.io/c/88x128/'
     
     books_list = get_booklist(auth_response.cookies)
 
@@ -66,5 +67,5 @@ def books_list(request):
     return render(
         request,
         'index.html',
-        context={'books_list':books_list},
+        context={'books_list': books_list, 'cover_url': cover_url},
     )

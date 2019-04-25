@@ -5,11 +5,19 @@
 
   <p>Welcome to <em>MyBooks</em>, a very basic Django website developed as a test task for beckend developer vacancy.</p>
 
-<h2>Dynamic content</h2>
+<h2>User's library</h2>
 
-  <p>The library has the following record counts:</p>
-  <ul>
-    <li><strong>Books:</strong> {{ books_list }}</li>
+  <p>Found this books:</p>
+  <ul class="sidebar-nav">
+    {% if books_list %}
+      {% for book in books_list %}
+        <li> 
+            <img src="{{ cover_url }}{{ book.cover }}" alt="Book's cover"> <strong>{{ book.name }}</strong> {{ book.author }} 
+        </li>
+      {% endfor %}
+    {% else %}
+      <p>User don't have any books.</p>
+    {% endif %}
   </ul>
 
 {% endblock %}
