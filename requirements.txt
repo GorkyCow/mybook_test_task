@@ -1,0 +1,8 @@
+Collecting freeze
+  Downloading https://files.pythonhosted.org/packages/c2/16/ca9fcd75d8c958b2260d521f18d7e697de5d2133fc68fc968feef4a348b6/freeze-1.0.10.tar.gz
+Collecting six (from freeze)
+  Using cached https://files.pythonhosted.org/packages/73/fb/00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9/six-1.12.0-py2.py3-none-any.whl
+Installing collected packages: six, freeze
+  Running setup.py install for freeze: started
+    Running setup.py install for freeze: finished with status 'done'
+Successfully installed freeze-1.0.10 six-1.12.0
