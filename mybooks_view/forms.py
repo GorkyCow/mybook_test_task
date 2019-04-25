@@ -7,6 +7,7 @@ import datetime #for checking renewal date range.
 class LoginForm(forms.Form):
     username = forms.EmailField(help_text="Enter here email")
     password = forms.CharField(widget=forms.PasswordInput())
+    message = None
 
     def clean_username(self):
         data = self.cleaned_data['username']

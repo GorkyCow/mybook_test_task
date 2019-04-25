@@ -9,16 +9,7 @@ import requests
 from .forms import LoginForm
 
 
-#@login_required
-class ModifyLoginView(views.LoginView):
-    #model = Book
-
-    def get_queryset(self):
-        pass
-
-
 def login(request):
-    
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -31,28 +22,19 @@ def login(request):
                 response.set_cookie('csrftoken', value=auth_response.cookies['csrftoken'])
                 response.set_cookie('uid', value=auth_response.cookies['uid'])
                 return response
-            elif auth_response.status_code == 400:
-                pass
+            else:
+                form = LoginForm(request.POST)
+                form.add_error('password',  auth_response.text)
             
     else:
         form = LoginForm()
     return render(request, 'registration/login.html', {'form': form})
 
 
-#@login_required
 def books_list(request):
     """
     Presents list of books from https://mybook.ru/api/bookuserlist/
     """
-    # Генерация "количеств" некоторых главных объектов
-    #num_books=Book.objects.all().count()
-    #num_instances=BookInstance.objects.all().count()
-    # Доступные книги (статус = 'a')
-    #num_instances_available=BookInstance.objects.filter(status__exact='a').count()
-    #num_authors=Author.objects.count()  # Метод 'all()' применен по умолчанию.
-    
-    # Отрисовка HTML-шаблона index.html с данными внутри 
-    # переменной контекста context
     def build_booklist(books_responce):
         result = []
         if books_responce.json()['objects']:
@@ -81,21 +63,24 @@ def books_list(request):
         if books_responce.json()['meta']['next']:
             next_page_url = books_url + books_responce['meta']['next']
             result += get_booklist(cookies, next_page_flag=True, next_page=next_page_url)
-        return result
+        if books_responce.status_code == 200:
+            return result
+        else:
+            return -1
 
     session = request.COOKIES.get('session')
     csrftoken = request.COOKIES.get('csrftoken')
     uid = request.COOKIES.get('uid')
-    #payload = {'email': 'gorkycow@gmail.com', 'password': '!QAZ2wsx'}
-    #auth_url='https://mybook.ru/api/auth/'
-    #auth_response = requests.post(auth_url, payload)
-    cover_url = 'https://i1.mybook.io/c/88x128/'
-    
-    books_list = get_booklist({'session': session, 'csrftoken': csrftoken, 'uid': uid})
-
-
-    return render(
-        request,
-        'index.html',
-        context={'books_list': books_list, 'cover_url': cover_url},
-    )
+    if session and csrftoken and uid:
+        cover_url = 'https://i1.mybook.io/c/88x128/'
+        books_list = get_booklist({'session': session, 'csrftoken': csrftoken, 'uid': uid})
+        if books_list == -1:
+            return HttpResponseRedirect(reverse('login'))
+        else:
+            return render(
+                request,
+                'index.html',
+                context={'books_list': books_list, 'cover_url': cover_url},
+            )
+    else:
+        return HttpResponseRedirect(reverse('login'))
