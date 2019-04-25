@@ -56,7 +56,7 @@ def books_list(request):
         return result
 
 
-    payload = {'email': 'gorkycow@gmail.com', 'password': 'LENAst_82'}
+    payload = {'email': 'gorkycow@gmail.com', 'password': '!QAZ2wsx'}
     auth_url='https://mybook.ru/api/auth/'
     auth_response = requests.post(auth_url, payload)
     cover_url = 'https://i1.mybook.io/c/88x128/'
