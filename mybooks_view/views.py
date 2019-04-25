@@ -2,17 +2,19 @@ from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 import requests
+from django.contrib.auth import views
+import django.contrib.auth.urls
 
 
 #@login_required
-class BookListView(generic.ListView):
+class ModifyLoginView(views.LoginView):
     #model = Book
 
     def get_queryset(self):
         pass
 
 
-#@login_required
+@login_required
 def books_list(request):
     """
     Presents list of books from https://mybook.ru/api/bookuserlist/
