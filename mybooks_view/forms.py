@@ -1,0 +1,22 @@
+from django import forms
+
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
+import datetime #for checking renewal date range.
+    
+class LoginForm(forms.Form):
+    username = forms.EmailField(help_text="Enter here email")
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    def clean_username(self):
+        data = self.cleaned_data['username']
+
+        if not data:
+            raise ValidationError(_('Invalid email - string is empty'))
+        return data
+
+    def clean_password(self):
+        data = self.cleaned_data['password']
+        if not data:
+            raise ValidationError(_('Invalid password - string is empty'))
+        return data

@@ -20,13 +20,14 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views
+from mybooks_view import views as myviews
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('books_list/', include('mybooks_view.urls')),
+    path('books_list/', include('mybooks_view.urls'), name='books_list'),
     path('', RedirectView.as_view(url='/books_list/', permanent=True)),
     #url(r'^accounts/', include('django.contrib.auth.urls')),
-    path('accounts/login/', views.LoginView.as_view(), name='login'),
+    path('accounts/login/', myviews.login, name='login'),
     path('accounts/logout/', views.LogoutView.as_view(), name='logout'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
