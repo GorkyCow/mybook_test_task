@@ -10,6 +10,9 @@ from .forms import LoginForm
 
 
 def login(request):
+    """
+    Presents login form
+    """
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -36,6 +39,9 @@ def books_list(request):
     Presents list of books from https://mybook.ru/api/bookuserlist/
     """
     def build_booklist(books_responce):
+        """
+        Builds information from API responce to custom dict
+        """
         result = []
         if books_responce.json()['objects']:
             for entry in books_responce.json()['objects']:
@@ -51,6 +57,16 @@ def books_list(request):
             return None
     
     def get_booklist(cookies, next_page_flag=False, next_page=None):
+        """
+        Recursively gets books from https://mybook.ru/api/bookuserlist/ 
+        until responce have ['meta']['next']
+        :param cookies: authentication cookies
+        :type cookies: dict
+        :param next_page_flag: flag for get_net_page mode
+        :type next_page_flag: bool
+        :param next_page: url for next page
+        :type next_page: str
+        """
         headers = {'Accept': 'application/json; version=5'}
         books_url = 'https://mybook.ru/api/bookuserlist/'
         result = []
