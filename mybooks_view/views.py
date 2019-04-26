@@ -83,7 +83,7 @@ def books_list(request):
         """
         site_name = 'https://mybook.ru'
         headers = {'Accept': 'application/json; version=5'}
-        books_url = f'{site_name}/api/bookuserlist/'
+        books_url = site_name + '/api/bookuserlist/'
         result = []
         if next_page_flag:
             books_response = requests.get(next_page, cookies=cookies, headers=headers)
