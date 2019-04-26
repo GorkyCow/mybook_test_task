@@ -81,19 +81,20 @@ def books_list(request):
         :param next_page: url for next page
         :type next_page: str
         """
+        site_name = 'https://mybook.ru'
         headers = {'Accept': 'application/json; version=5'}
-        books_url = 'https://mybook.ru/api/bookuserlist/'
+        books_url = f'{site_name}/api/bookuserlist/'
         result = []
         if next_page_flag:
-            books_responce = requests.get(next_page, cookies=cookies, headers=headers)
-            result += build_booklist(books_responce)
+            books_response = requests.get(next_page, cookies=cookies, headers=headers)
+            result += build_booklist(books_response)
         else:
-            books_responce = requests.get(books_url, cookies=cookies, headers=headers)
-            result += build_booklist(books_responce)
-        if books_responce.json()['meta']['next']:
-            next_page_url = books_url + books_responce['meta']['next']
+            books_response = requests.get(books_url, cookies=cookies, headers=headers)
+            result += build_booklist(books_response)
+        if books_response.json()['meta']['next']:
+            next_page_url = site_name + books_response.json()['meta']['next']
             result += get_booklist(cookies, next_page_flag=True, next_page=next_page_url)
-        if books_responce.status_code == 200:
+        if books_response.status_code == 200:
             return result
         else:
             return -1
