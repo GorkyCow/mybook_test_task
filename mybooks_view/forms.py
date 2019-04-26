@@ -10,7 +10,7 @@ class LoginForm(forms.Form):
     message = None
 
     def clean_username(self):
-        data = self.cleaned_data['username']
+        data = self.cleaned_data['username'].lower()
 
         if not data:
             raise ValidationError(_('Invalid email - string is empty'))
