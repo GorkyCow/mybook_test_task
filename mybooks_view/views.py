@@ -6,7 +6,7 @@ import django.contrib.auth.urls
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import requests
-from .forms import LoginForm
+from .forms import LoginForm, LogoutForm
 
 
 def login(request):
@@ -32,6 +32,20 @@ def login(request):
     else:
         form = LoginForm()
     return render(request, 'registration/login.html', {'form': form})
+
+
+def logout(request):
+    """
+    Presents logout form
+    """
+    if request.method == 'POST':
+        response = HttpResponseRedirect(reverse('login'))
+        response.delete_cookie('session')
+        response.delete_cookie('uid')
+        return response
+    else:
+        form = LogoutForm()
+    return render(request, 'registration/logged_out.html', {'form': form})
 
 
 def books_list(request):
@@ -91,7 +105,10 @@ def books_list(request):
         cover_url = 'https://i1.mybook.io/c/88x128/'
         books_list = get_booklist({'session': session, 'csrftoken': csrftoken, 'uid': uid})
         if books_list == -1:
-            return HttpResponseRedirect(reverse('login'))
+            response = HttpResponseRedirect(reverse('login'))
+            response.delete_cookie('session')
+            response.delete_cookie('uid')
+            return response
         else:
             return render(
                 request,
@@ -99,4 +116,7 @@ def books_list(request):
                 context={'books_list': books_list, 'cover_url': cover_url},
             )
     else:
-        return HttpResponseRedirect(reverse('login'))
+        response = HttpResponseRedirect(reverse('login'))
+        response.delete_cookie('session')
+        response.delete_cookie('uid')
+        return response

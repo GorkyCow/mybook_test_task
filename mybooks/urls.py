@@ -28,5 +28,5 @@ urlpatterns = [
     path('books_list/', include('mybooks_view.urls'), name='books_list'),
     path('', RedirectView.as_view(url='/books_list/', permanent=True)),
     path('accounts/login/', myviews.login, name='login'),
-    path('accounts/logout/', views.LogoutView.as_view(), name='logout'),
+    path('accounts/logout/', myviews.logout, name='logout'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

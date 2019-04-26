@@ -1,7 +1,12 @@
 {% extends "mybooks_view/base_generic.html" %}
 
 {% block content %}
-<p>Logged out!</p>  
+<p><strong>Sure whant to log out?</strong></p>  
 
-<a href="{% url 'login'%}">Click here to login again.</a>
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <div>
+        <input type="submit" value="logout" />
+    </div>
+</form>
 {% endblock %}
