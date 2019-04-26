@@ -68,7 +68,7 @@ def books_list(request):
                 )
             return result
         else:
-            return None
+            return []
     
     def get_booklist(cookies, next_page_flag=False, next_page=None):
         """
